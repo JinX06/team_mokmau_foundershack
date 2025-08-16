@@ -1,0 +1,25 @@
+{
+  "name": "team_mokmau_foundershack",
+  "version": "1.0.0",
+  "description": "Welcome to Team Mokmau's submission for the [FounderHack](https://www.nextgenventures.com.au/foundershack) hackathon!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JinX06/team_mokmau_foundershack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JinX06/team_mokmau_foundershack/issues"
+  },
+  "homepage": "https://github.com/JinX06/team_mokmau_foundershack#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "tailwind": "^4.0.0"
+  }
+}
