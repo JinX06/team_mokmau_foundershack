@@ -12,32 +12,137 @@ We are Team Mokmau, passionate about leveraging technology to create impactful s
 
 ## Project Overview
 
-**Project Name:** [Your Project Name Here]  
-**Challenge Statement:** [Briefly describe the challenge your project addresses]  
-**Solution:** [Summarize your solution and its key features]
+**Project Name:** [Gotcha!]  
+
+**Challenge Statement:** Academic integrity tools often punish first and ask questions later. We wanted the opposite: verify the author, not just the answer. The idea for Gotcha came from watching classmates and lecturers struggle—detectors flagging genuine work, students losing trust, and staff drowning in manual checks. Our key insight: a student already has a signature style. If we can baseline that style under invigilated conditions and compare later work to it, we can flag suspicious drift with context and keep a human in the loop.
+
+**Solution:** 
+Baseline the student’s style (no policing, just profiling).
+
+In an invigilated setting, the student submits an essay/code sample. We extract transparent, privacy-safe features (e.g., type–token ratio, average sentence length, punctuation/caps ratios, LOC, comment/blank ratios, naming patterns, simple complexity proxies). This becomes the student’s style profile.
+	•	Compare future work against the baseline.
+
+For each new submission, we recompute features and run two checks:
+	1.	Style drift: distance from the student’s baseline across linguistic and code-format dimensions.
+	2.	AI-assist likelihood: a Vertex AI AutoML Tabular classifier (trained on labeled human vs AI-assisted examples) outputs calibrated class probabilities.
+	•	Human-first decisioning.
+
+We never auto-penalize. We present:
+	•	an AI usage score (with an adjustable operating threshold),
+	•	evidence (which features drifted and by how much),
+	•	and next steps (e.g., brief viva, live code reproduction, draft provenance).
+    
+Educators remain in the loop; students see constructive, non-accusatory language.
+	•	Simple, practical architecture.
+	•	Ingest/Upload: Student files stored in MongoDB; raw text/code is parsed server-side.
+	•	Feature Extractors: Lightweight, explainable metrics (no raw text stored in the model).
+	•	Modeling: Vertex AI AutoML Tabular (predefined splits, endpoint deployment).
+	•	API: /predict endpoint supports Baseline (register style) and Compare (score + drift).
+	•	UI: Teacher can pick uploaded files, run comparisons, and view JSON evidence.
+	•	Why this works (and is fair).
+	•	Personalization: We verify authorship by consistency with the student’s own style.
+	•	Explainability: All features are interpretable—no opaque embeddings required.
+	•	Safety: We log model version, threshold, features, and evidence for audits; results are framed as signals, not verdicts.
+	•	What we built during the hackathon.
+	•	End-to-end pipeline: data prep → AutoML training → endpoint deployment → real-time predictions.
+	•	Robust server: timeouts, health checks, baseline fast-path, and manual file picker for demos.
+	•	Synthetic but realistic datasets to satisfy AutoML’s 1k-row minimum and showcase the flow.
+	•	Roadmap.
+	•	Replace/augment simple metrics with privacy-preserving style embeddings (stored as vectors only).
+	•	Student-wise splits and per-course thresholds to reduce leakage and improve calibration.
+	•	Batch scoring + dashboards (precision/recall curves, drift over time) for admins.
+	•	Optional integrations (LMS, plagiarism DBs, IDE telemetry) with explicit consent.
 
 ## How to Run
 
-1. Clone this repository:
-    ```
-    git clone https://github.com/[your-repo-url]
-    ```
-2. Follow the instructions in the project folder to set up and run the application.
+### 0) Prerequisites
+- **Node.js** ≥ 18 (includes `npm` and `fetch`)
+- **Git**
+- **Google Cloud CLI** (`gcloud`) with access to Vertex AI
+- **MongoDB** (local or Atlas)
+
+This app uses:
+- **Express** (server)
+- **Tailwind CSS** (UI)
+- **Mongoose** (MongoDB ODM)
+- **dotenv** (for `.env` config)
+
+---
+
+### 1) Clone the repo
+```git clone https://github.com/JinX06/team_mokmau_foundershack.git```
+```cd team_mokmau_foundershack```
+
+### 2) Install dependencies
+```npm install```
+```npm install sharp```
+### 3) Set up environment variables
+Create a `.env` file in the root directory and add the necessary environment variables. You can use the provided `.env.example` as a reference.
+# ===== App =====
+PORT=3000
+BASE_URL=http://localhost:3000
+
+# ===== MongoDB =====
+MONGO_URI=mongodb://127.0.0.1:27017/gotcha_dev  # or Atlas URI
+
+# ===== Google Cloud / Vertex AI =====
+GCP_PROJECT=your-gcp-project-id
+VERTEX_REGION=us-central1
+VERTEX_ENDPOINT_ID=xxxxxxxxxxxxxxxxxx
+VERTEX_PREDICT_TIMEOUT_MS=25000
+
+# (Option A) Use ADC
+# gcloud auth application-default login
+
+# (Option B) Service Account
+# GOOGLE_APPLICATION_CREDENTIALS=/path/to/service-account.json
+
+### Authenticate with Google Cloud
+gcloud auth application-default login
+gcloud config set project your-gcp-project-id
+
+### MongoDB Setup
+1. Install MongoDB locally or use MongoDB Atlas.
+2. Create a database named `gotcha_dev`.
+3. Create a collection named `submissions`.
+
+### Vertex AI Setup
+Model must be Deployed in Vertex AI → Endpoints.
+Copy the Endpoint ID into .env.
+Prediction schema must match training features (column names + types).
 
 ## Technologies Used
 
 - [List main technologies, frameworks, and tools used]
+- **Python** – Backend logic, feature extraction, and API development
+- **MongoDB** – Secure storage for student submissions and style profiles
+- **Google Cloud Vertex AI** – AutoML Tabular modeling and deployment
+- **JavaScript & Node.js** – Server-side application and API endpoints
+- **Express** – Web framework for building RESTful APIs
+- **HTML & TailwindCSS** – Frontend UI for educators and students
+- **Mongoose & Multer** – MongoDB object modeling and file upload handling
+- **Regex** – Text and code parsing for feature extraction
+- **ChatGPT & GitHub Copilot** – Assisted development and prototyping
+- **Canva** – Design and prototyping tool
+- **Google Docs** – Document creation and collaboration tool
+- **GitHub** – Version control and collaboration platform
+- **VSCode** – Integrated development environment for coding
 
 ## Team Members
 
-- Ong Jin Xiang - [Role]
-- Foo Yu Jun - [Role]
-- Ng Yu Xuan - [Role]
-- Wong Weng Hin - [Role]
+- Ong Jin Xiang - [Team CEO]
+- Foo Yu Jun - [Team Lead]
+- Ng Yu Xuan - [Team Lead]
+- Wong Weng Hin - [Team Lead]
 
 ## Contact
 
-For questions or collaboration, reach out via [preferred contact method].
+For questions or collaboration, reach out via [jong0092@student.monash.edu].
+
+## Additional Information
+
+For the use of VertexAI API, please refer to the official documentation: [Vertex AI Documentation](https://cloud.google.com/vertex-ai/docs)
+If the API for VertexAI is needed, contact the gmail contact above.
 
 ---
 
