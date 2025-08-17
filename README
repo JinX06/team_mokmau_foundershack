@@ -55,6 +55,13 @@ Educators remain in the loop; students see constructive, non-accusatory language
 
 ## How to Run
 
+### Important Notes
+- If you do not have an existing MongoDB instance and want to set one up locally, you can follow the [MongoDB installation guide](https://docs.mongodb.com/manual/installation/).
+- If you prefer using MongoDB Atlas, you can create a free account and follow the [Atlas setup guide](https://docs.atlas.mongodb.com/getting-started/).
+- If you don't want to set up a database, you can skip the login page by typing in:
+Teacher's Dashboard: "http://<your-ip-address>:<port>/teacher/mrsmith"
+Student's Dashboard: "http://<your-ip-address>:<port>/student/mrsmith"
+
 ### 0) Prerequisites
 - **Node.js** ≥ 18 (includes `npm` and `fetch`)
 - **Git**
@@ -74,8 +81,11 @@ This app uses:
 ```cd team_mokmau_foundershack```
 
 ### 2) Install dependencies
-```npm install```
-```npm install sharp```
+npm install express
+npm install sharp
+npm install tailwindcss
+npm install mongoose
+
 ### 3) Set up environment variables
 Create a `.env` file in the root directory and add the necessary environment variables. You can use the provided `.env.example` as a reference.
 # ===== App =====

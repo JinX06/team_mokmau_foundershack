@@ -1,0 +1,31 @@
+student_id,submission_id,label,language,code_snippet,notes,indent_uniformity_score,comment_density_per_100loc,variable_naming_style,cyclomatic_complexity
+stu_004,sub_007,human,python,"def fib(n):
+  a,b=0,1
+  out=[]
+  for i in range(n):
+     out.append(a)
+     a,b=b,a+b  # quick swap
+  return out","2–3 space inconsistencies, inline casual comment, short vars.",0.62,3.0,short_lower,2
+stu_004,sub_008,ai_assisted,python,"def fibonacci_sequence(length: int) -> list[int]:
+    """"""Return the Fibonacci sequence up to `length` terms.""""""
+    first, second = 0, 1
+    sequence: list[int] = []
+    for _ in range(length):
+        sequence.append(first)
+        first, second = second, first + second
+    return sequence","PEP8-conformant, type hints, descriptive names, docstring.",0.98,8.0,snake_case_descriptive,2
+stu_005,sub_009,human,javascript,"function sum(arr){
+	let t=0 //acc
+  for (let i=0;i<arr.length;i++){
+     t += arr[i]
+  } // done
+  return t
+}","Mixed tabs/spaces, short names, trailing comments, minimal spacing.",0.55,4.5,short_lower,2
+stu_005,sub_010,ai_assisted,javascript,"/**
+ * Sum numbers in an array.
+ * @param {number[]} numbers
+ * @returns {number}
+ */
+export function sum(numbers){
+    return numbers.reduce((total, n) => total + n, 0);
+}","JSDoc, arrow function in reduce, export, consistent braces/spacing.",0.99,10.0,camelCase_descriptive,1

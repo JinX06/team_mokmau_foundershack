@@ -960,18 +960,6 @@ app.get('/files/:id/thumb', async (req, res) => {
   }
 });
 
-app.get('/wongweng', (req, res) => {
-  const imgPath = path.join(__dirname, 'public', 'Cover.png');
-  fs.access(imgPath, fs.constants.F_OK, (err) => {
-    if (err) {
-      return res.status(404).send('Cover.png not found in /public');
-    }
-    // Use absUrl to generate correct link
-    const imgUrl = absUrl(req, '/Cover.png');
-    res.send(`<a href="${imgUrl}">Cover Image</a><br><img src="${imgUrl}" alt="Cover Image" style="max-width:400px;">`);
-  });
-});
-
 // In server.js (after connecting to MongoDB and defining User model)
 app.post('/signup', async (req, res) => {
   try {

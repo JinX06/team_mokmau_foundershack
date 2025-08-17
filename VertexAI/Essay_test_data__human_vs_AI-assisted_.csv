@@ -1,0 +1,15 @@
+student_id,submission_id,label,text_excerpt,notes,avg_sentence_length,type_token_ratio,formality_score,transitional_phrase_rate,repetitiveness_score,personalization_score,gltr_like_uniformity
+stu_001,sub_001,human,"I bombed my first calculus quiz. After that, I started meeting Lena at the library on Tuesdays.
+    We traded problems and I finally stopped skipping the algebra steps. It’s slower, but I actually
+    understand why the derivative rules work now.","Conversational tone, concrete details (names, days), mild grammar looseness.",16.2,0.58,0.34,2.0,0.18,0.86,0.35
+stu_001,sub_002,ai_assisted,"In conclusion, the mastery of differential calculus fundamentally enhances problem-solving capacity.
+    Furthermore, by implementing a structured study regimen, students can efficiently consolidate conceptual understanding.
+    This approach ensures consistent performance across assessments.","Generic phrasing, high formality, stacked transitions ('In conclusion', 'Furthermore').",24.9,0.46,0.88,9.5,0.41,0.08,0.77
+stu_002,sub_003,human,"Our group tried three magnet setups and the third finally nudged the needle. It wasn’t pretty;
+    the tape kept peeling, and we had to re-do the coil twice. Still, the reading went up when we tightened the windings.","Specific experiment details, messiness, concrete actions.",17.4,0.61,0.39,1.2,0.16,0.72,0.33
+stu_002,sub_004,ai_assisted,"The results clearly demonstrate a positive correlation between coil optimization and measurement stability.
+    Additionally, iterative refinement procedures facilitate reproducible outcomes under controlled conditions.","Abstract nouns, passive constructions, formal register.",23.1,0.49,0.86,7.8,0.38,0.12,0.74
+stu_003,sub_005,human,"When the server crashed, I patched the config in a hurry and forgot to restart the service.
+    Ten minutes later, the logs looked the same and I felt dumb. Next time I’m writing a checklist.","Colloquial language, self-reference, concrete timeline.",15.1,0.57,0.32,1.0,0.2,0.8,0.31
+stu_003,sub_006,ai_assisted,"Effective incident response necessitates comprehensive configuration validation and rigorous post-deployment monitoring.
+    By adhering to best practices, teams can prevent recurrence and maintain high availability.","Management-speak, generic best practices, few specifics.",22.7,0.45,0.9,8.1,0.36,0.1,0.79

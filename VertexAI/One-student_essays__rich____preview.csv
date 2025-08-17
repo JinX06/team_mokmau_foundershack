@@ -1,0 +1,13 @@
+student_id,submission_id,timestamp,phase,label,topic,difficulty,avg_sentence_length,type_token_ratio,formality_score,transitional_phrase_rate,repetitiveness_score,personalization_score,gltr_like_uniformity,embedding_similarity_to_baseline,time_to_submit_hours,split
+stu_007,essay_000,2024-03-01T20:34:46.032177,baseline,human,calculus,intermediate,19.17,0.568,0.442,1.06,0.231,0.918,0.297,0.912,37.3,train
+stu_007,essay_001,2024-03-10T13:56:56.694788,baseline,human,networking,advanced,12.27,0.592,0.192,2.84,0.376,0.798,0.322,0.869,31.1,train
+stu_007,essay_002,2024-03-21T23:52:44.556046,baseline,human,ethics,intermediate,15.85,0.48,0.316,3.32,0.176,0.85,0.391,0.874,35.0,train
+stu_007,essay_003,2024-04-01T21:49:58.724928,baseline,human,calculus,intermediate,14.34,0.546,0.306,2.31,0.265,0.961,0.301,0.901,50.0,train
+stu_007,essay_004,2024-04-10T06:19:57.025651,baseline,human,statistics,intro,13.01,0.505,0.289,2.49,0.266,0.832,0.282,0.95,58.2,train
+stu_007,essay_005,2024-04-20T00:27:26.689145,baseline,human,economics,intermediate,14.29,0.623,0.377,2.7,0.207,0.846,0.428,0.848,47.1,train
+stu_007,essay_006,2024-04-29T23:17:36.010954,baseline,human,networking,intermediate,12.18,0.466,0.268,2.35,0.253,0.747,0.416,0.853,46.2,train
+stu_007,essay_007,2024-05-10T04:30:54.472509,baseline,human,ethics,intro,14.61,0.593,0.278,3.57,0.154,0.808,0.301,0.808,45.4,train
+stu_007,essay_008,2024-05-19T06:14:41.372399,baseline,human,server_ops,intermediate,15.81,0.634,0.375,1.65,0.197,0.814,0.327,0.933,57.2,train
+stu_007,essay_009,2024-05-30T11:39:13.067862,baseline,human,networking,intro,14.28,0.533,0.272,1.88,0.243,0.818,0.318,0.87,45.0,train
+stu_007,essay_010,2024-06-09T22:52:12.181961,natural_growth,human,calculus,intermediate,18.39,0.418,0.401,2.29,0.18,0.728,0.399,0.764,74.0,train
+stu_007,essay_011,2024-06-20T02:29:35.035865,natural_growth,human,biology,intro,19.38,0.576,0.356,2.3,0.217,0.808,0.391,0.784,37.8,train
