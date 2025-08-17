@@ -518,61 +518,72 @@ app.get('/teacher/:username', async (req, res) => {
     let selected = null;
     let analysis = null;
     // Dummy submissions (replace with DB query later)
-    let subs = [
-        {
-          student: 'alice',
-          assignmentId: 1,
-          submittedAt: '2025-08-01',
-          aiScore: 23,
-          aiConfidence: 'low',
-          aiReasoning: 'Style differs from past.',
-          fileName: 'alice_assignment1.pdf'
-        },
-        {
-          student: 'bob',
-          assignmentId: 1,
-          submittedAt: '2025-08-02',
-          aiScore: 82,
-          aiConfidence: 'high',
-          aiReasoning: 'Highly structured language detected.',
-          fileName: 'bob_assignment1.pdf'
-        },
-        {
-          student: 'alice',
-          assignmentId: 2,
-          submittedAt: '2025-08-10',
-          aiScore: 60,
-          aiConfidence: 'medium',
-          aiReasoning: 'Some style deviation noticed.',
-          fileName: 'alice_assignment2.pdf'
-        },
-        {
-          student: 'bob',
-          assignmentId: 2,
-          submittedAt: '2025-08-12',
-          aiScore: 45,
-          aiConfidence: 'medium',
-          aiReasoning: 'Partially AI-assisted content detected.',
-          fileName: 'bob_assignment2.pdf'
-        },
-      ];
+// Dummy submissions
+const allSubmissions = [
+  {
+    student: 'alice',
+    assignmentId: 1,
+    submittedAt: '2025-08-01',
+    aiScore: 23,
+    aiConfidence: 'low',
+    aiReasoning: `The text is largely consistent with Alice's prior submissions. 
+    Minor stylistic differences detected, such as slightly longer sentences. 
+    Vocabulary and sentence structure match her usual patterns. 
+    No significant AI-generated markers observed.`,
+    fileName: 'alice_assignment1.pdf'
+  },
+  {
+    student: 'bob',
+    assignmentId: 1,
+    submittedAt: '2025-08-02',
+    aiScore: 82,
+    aiConfidence: 'high',
+    aiReasoning: `The submission uses highly structured and formal language unlike Bob's previous work. 
+    Sentences are consistently long with advanced vocabulary. 
+    Paragraphs are perfectly uniform in length, suggesting possible AI assistance. 
+    Patterns match common AI-generated text markers, including repeated phrasing and smooth transitions.`,
+    fileName: 'bob_assignment1.pdf'
+  },
+  {
+    student: 'alice',
+    assignmentId: 2,
+    submittedAt: '2025-08-10',
+    aiScore: 60,
+    aiConfidence: 'medium',
+    aiReasoning: `Some deviations in writing style detected. 
+    Sentence complexity increased compared to prior submissions. 
+    Vocabulary is slightly more advanced and the logical flow is smoother. 
+    Possible partial AI assistance indicated.`,
+    fileName: 'alice_assignment2.pdf'
+  },
+  {
+    student: 'bob',
+    assignmentId: 2,
+    submittedAt: '2025-08-12',
+    aiScore: 45,
+    aiConfidence: 'medium',
+    aiReasoning: `Text shows a mix of Bob's usual style and more sophisticated patterns. 
+    Some sentences exhibit repetitive phrasing typical of AI, 
+    but overall structure is still similar to past assignments.`,
+    fileName: 'bob_assignment2.pdf'
+  },
+];
 
 if (selectedId) {
   // Assignment-focused mode
-  let subs = allSubmissions.filter(s => s.assignmentId === selectedId);
+  let filteredSubs = allSubmissions.filter(s => s.assignmentId === selectedId);
 
   if (selectedStudent) {
-    subs = subs.filter(s => s.student === selectedStudent);
+    filteredSubs = filteredSubs.filter(s => s.student === selectedStudent);
   }
 
   const a = assignments.find(x => x.id === selectedId) || {
     id: selectedId,
     title: `Assignment ${selectedId}`
   };
-  selected = { ...a, submissions: subs };
-
-  // Build AI analysis
-  const scores = subs.map(s => Number(s.aiScore) || 0);
+  selected = { ...a, submissions: filteredSubs };
+    // Build AI analysis
+  const scores = filteredSubs.map(s => Number(s.aiScore) || 0);
   const avgScore = scores.length
     ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
     : 0;
@@ -580,8 +591,8 @@ if (selectedId) {
     avgScore >= 75 ? 'high' : avgScore >= 40 ? 'medium' : 'low';
   const isAIContent =
     avgScore >= 80 ? 'likely' : avgScore >= 40 ? 'partial' : 'unlikely';
-  const evidence = subs.map(s => s.aiReasoning).filter(Boolean).slice(0, 5);
-  const styleDeviationDetected = subs.some(s => (s.aiScore || 0) > 50);
+  const evidence = filteredSubs.map(s => s.aiReasoning).filter(Boolean).slice(0, 5);
+  const styleDeviationDetected = filteredSubs.some(s => (s.aiScore || 0) > 50);
 
   analysis = {
     isAIContent,
@@ -598,14 +609,14 @@ if (selectedId) {
       'Consider running the text through multiple AI detection tools to confirm suspicions, but always balance with a holistic academic review.'
     ]
   };
+
 } else if (selectedStudent) {
   // Student-focused mode
-  let subs = allSubmissions.filter(s => s.student === selectedStudent);
+  let filteredSubs = allSubmissions.filter(s => s.student === selectedStudent);
 
-  // For student view, we just show submissions per assignment
   selected = {
     student: selectedStudent,
-    submissions: subs.map(s => ({
+    submissions: filteredSubs.map(s => ({
       assignmentId: s.assignmentId,
       submittedAt: s.submittedAt,
       fileName: s.fileName,
@@ -615,7 +626,6 @@ if (selectedId) {
     }))
   };
 
-  // No AI analysis summary for student-focused view
   analysis = null;
 }
     // Render page
@@ -961,6 +971,44 @@ app.get('/wongweng', (req, res) => {
     res.send(`<a href="${imgUrl}">Cover Image</a><br><img src="${imgUrl}" alt="Cover Image" style="max-width:400px;">`);
   });
 });
+
+// In server.js (after connecting to MongoDB and defining User model)
+app.post('/signup', async (req, res) => {
+  try {
+    const { name, password, confirm_password, userType } = req.body;
+
+    // Validate required fields
+    if (!name || !password || !confirm_password || !userType) {
+      return res.status(400).send('All fields are required.');
+    }
+
+    // Check passwords match
+    if (password !== confirm_password) {
+      return res.status(400).send('Passwords do not match.');
+    }
+
+    // Check if user already exists (same username + userType)
+    const existing = await User.findOne({ username: name, userType });
+    if (existing) {
+      return res.status(400).send(`A ${userType} account with this username already exists.`);
+    }
+
+    // Create new user
+    const user = new User({
+      username: name, // save username exactly as typed in the form
+      password,       // plain password
+      userType
+    });
+
+    await user.save();
+
+    res.send(`✅ ${userType.charAt(0).toUpperCase() + userType.slice(1)} account created successfully!`);
+  } catch (err) {
+    console.error('Signup error:', err);
+    res.status(500).send('Server error.');
+  }
+});
+
 
 
 
