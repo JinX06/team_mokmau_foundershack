@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Header with Profile -->
+  <header class="bg-white shadow-md py-4">
+    <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Teacher Dashboard</h1>
+      <div class="relative inline-block text-left">
+        <button id="profileBtn" aria-haspopup="true" aria-expanded="false" class="inline-flex justify-center w-full rounded-full border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+          <span class="mr-2"><%= username %></span> ▾
+        </button>
+        <div id="profileMenu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+          <div class="py-1">
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account</a>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+            <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold mb-6 text-gray-700 text-center">Welcome, <%= username %>!</h2>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- Assignments list -->
+      <section class="bg-white rounded-2xl shadow-lg p-6">
+        <h3 class="text-xl font-semibold mb-4 text-gray-600">Assignments</h3>
+        <ul id="assignmentsList" class="space-y-3">
+          <% if (assignments.length === 0) { %>
+            <li class="text-gray-400">No assignments available.</li>
+          <% } else { %>
+            <% assignments.forEach(a => { %>
+              <li class="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer" data-id="<%= a.id %>">
+                <div class="flex justify-between items-center">
+                  <div>
+                    <div class="font-semibold"><%= a.title %></div>
+                    <div class="text-sm text-gray-500"><%= a.due || '' %></div>
+                  </div>
+                  <div class="text-sm text-gray-400">Submissions: <%= a.submissionsCount || 0 %></div>
+                </div>
+              </li>
+            <% }) %>
+          <% } %>
+        </ul>
+      </section>
+
+      <!-- Students list -->
+       <!-- Students list -->
+<!-- <section class="bg-white rounded-2xl shadow-lg p-6">
+  <h3 class="text-xl font-semibold mb-4 text-gray-600">Students</h3>
+  <ul id="studentsList" class="space-y-3">
+    <% if (students.length === 0) { %>
+      <li class="text-gray-400">No students available.</li>
+    <% } else { %>
+      <% students.forEach(s => { %>
+        <li class="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer" data-id="<%= s.username %>">
+          <a href="/teacher/<%= username %>?assignment=<%= selected?.id || 0 %>&student=<%= s.username %>">
+            <%= s.username %>
+          </a>
+          <div class="flex justify-between items-center">
+            <div>
+              <div class="font-semibold"><%= s.username %></div>
+              <div class="text-sm text-gray-500">Joined: <%= s.createdAt?.toDateString?.() || "N/A" %></div>
+            </div>
+            <div class="text-sm text-gray-400">
+              Submissions: <%= s.submissionsCount || 0 %>
+            </div>
+          </div>
+        </li>
+      <% }) %>
+    <% } %>
+  </ul>
+</section> -->
+
+<section class="bg-white rounded-2xl shadow-lg p-6">
+  <h3 class="text-xl font-semibold mb-4 text-gray-600">Students</h3>
+  <ul id="studentsList" class="space-y-3">
+    <% if (students.length === 0) { %>
+      <li class="text-gray-400">No students available.</li>
+    <% } else { %>
+      <% students.forEach(s => { %>
+        <li>
+        <a 
+        href="/teacher/<%= username %>?assignment=<%= selected?.id || 0 %>&student=<%= s.username %>"
+        class="flex items-center justify-between p-4 bg-gray-50 rounded-lg shadow hover:bg-gray-100 transition"
+        >
+      <span class="font-medium text-gray-700"><%= s.username %></span>
+      <span class="text-sm text-gray-500">View Assignments →</span>
+        </a>
+        </li>
+
+      <% }) %>
+    <% } %>
+  </ul>
+</section>
+
+
+
+      <!-- Assignment/Student details -->
+      <section class="bg-white rounded-2xl shadow-lg p-6 lg:col-span-3">
+        <h3 class="text-xl font-semibold mb-4 text-gray-600">Details</h3>
+        <div id="detailsSection">
+          <% if (selected) { %>
+            <div class="mb-4">
+              <h4 class="text-lg font-bold"><%= selected.title %></h4>
+              <p class="text-sm text-gray-600"><%= selected.description || '' %></p>
+              <p class="text-xs text-gray-500">Due: <%= selected.due || 'TBD' %></p>
+            </div>
+
+            <% if (analysis) { %>
+              <div class="mb-4 p-3 bg-yellow-50 border-l-4 border-yellow-300 rounded">
+                <div class="font-semibold">AI Analysis Summary</div>
+                <div class="text-sm text-gray-700">Overall AI usage: <strong><%= analysis.aiUsageScore %>%</strong> — <%= analysis.isAIContent %> (confidence: <%= analysis.confidenceLevel %>)</div>
+                <div class="text-sm text-gray-700 mt-2">Evidence: <%= analysis.evidence.join('; ') || 'No strong signals' %></div>
+                <div class="text-sm text-gray-700 mt-2">Suggestions:</div>
+                <ul class="text-sm text-gray-700 list-disc list-inside">
+                  <% analysis.suggestions.forEach(s => { %>
+                    <li><%= s %></li>
+                  <% }) %>
+                </ul>
+              </div>
+            <% } %>
+
+            <div class="space-y-3">
+              <% selected.submissions.forEach(sub => { %>
+                <div class="p-3 border rounded">
+                  <div class="flex justify-between items-start">
+                    <div>
+                      <div class="font-medium"><%= sub.student %></div>
+                      <div class="text-sm text-gray-500">Submitted: <%= sub.submittedAt || 'unknown' %></div>
+                    </div>
+                    <div class="text-right">
+                      <div class="text-sm font-semibold">AI Score: <span class="text-green-600"><%= sub.aiScore %></span></div>
+                      <div class="text-xs text-gray-500">Confidence: <%= sub.aiConfidence || 'n/a' %></div>
+                    </div>
+                  </div>
+                  <div class="mt-2 text-sm text-gray-700">Reasoning: <%= sub.aiReasoning || 'No reasoning available' %></div>
+                  <div class="mt-3">
+                    <% if (sub.fileName) { %>
+                      <a class="inline-block bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-sm" href="/files/byname/<%= encodeURIComponent(sub.fileName) %>" target="_blank" rel="noopener">View PDF</a>
+                    <% } else { %>
+                      <span class="text-xs text-gray-500">No file attached</span>
+                    <% } %>
+                  </div>
+                </div>
+              <% }) %>
+            </div>
+          <% } else { %>
+            <div class="text-gray-500">Select an assignment or student to see details.</div>
+          <% } %>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const profileBtn = document.getElementById('profileBtn');
+    const profileMenu = document.getElementById('profileMenu');
+
+    profileBtn.addEventListener('click', () => {
+      profileMenu.classList.toggle('hidden');
+      profileBtn.setAttribute('aria-expanded', !profileMenu.classList.contains('hidden'));
+    });
+
+    window.addEventListener('click', e => {
+      if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+        profileMenu.classList.add('hidden');
+        profileBtn.setAttribute('aria-expanded', false);
+      }
+    });
+
+    // Assignment selection
+    document.querySelectorAll('#assignmentsList li').forEach(li => {
+      li.addEventListener('click', () => {
+        const id = li.getAttribute('data-id');
+        window.location.href = `/teacher/${encodeURIComponent("<%= username %>")}?assignment=${id}`;
+      });
+    });
+
+    // Student selection
+    document.querySelectorAll('#studentsList li').forEach(li => {
+      li.addEventListener('click', () => {
+        const id = li.getAttribute('data-id');
+        window.location.href = `/teacher/${encodeURIComponent("<%= username %>")}?student=${id}`;
+      });
+    });
+  </script>
+</body>
+</html>

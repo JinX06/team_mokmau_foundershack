@@ -1,0 +1,4 @@
+{
+  "watch": ["*.js", "views", "public"],
+  "ignore": ["nohup.out", "node_modules", "uploads", "google-cloud-sdk"]
+}

@@ -1,9 +1,11 @@
 node_modules/yy
 npmy-ydebug.log*y
 y
-#Pythong
+
+#Python
 __pycache__/
 *.pyc
+tempCodeRunnerFile*
 
 # macOS
 .DS_Store
@@ -21,3 +23,4 @@ node_modules
 
 # Folder
 google-cloud-sdk
+getout

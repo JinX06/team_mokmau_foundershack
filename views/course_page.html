@@ -1,27 +1,57 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Assignments</title>
-<script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>Course Assignments</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="bg-gray-100 text-gray-800 font-sans">
 
-<%- include('partials/navbar.html') %>
+  <!-- Header with Profile -->
+  <header class="bg-white shadow-md py-4">
+    <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-blue-600">Course <%= courseId %></h1>
+      <div class="relative inline-block text-left">
+        <button id="profileBtn" class="inline-flex justify-center w-full rounded-full border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 transition">
+          <span class="mr-2"><%= username %></span> ▾
+        </button>
+        <div id="profileMenu" class="origin-top-right absolute right-0 mt-2 w-48 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden z-10">
+          <div class="py-1">
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit Preferences</a>
+            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Set Status</a>
+            <a href="/logout" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
 
-<main class="max-w-6xl mx-auto px-4 py-20">
-  <h2 class="text-3xl font-bold mb-6">Assignments</h2>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <% assignments.forEach(assignment => { %>
-      <a href="/student/<%= username %>/course/<%= courseId %>/assignment/<%= assignment.id %>"
-         class="block bg-white shadow-md rounded-xl p-6 hover:shadow-xl transition">
-        <h4 class="text-xl font-semibold"><%= assignment.title %></h4>
-      </a>
-    <% }) %>
-  </div>
-  <div class="mt-6">
-    <a href="/student/<%= username %>" class="text-blue-600 hover:underline">← Back to Dashboard</a>
-  </div>
-</main>
+  <!-- Assignments -->
+  <main class="max-w-6xl mx-auto px-4 py-16">
+    <h2 class="text-3xl font-bold mb-10 text-gray-700 text-center">Assignments for Course <%= courseId %></h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <% assignments.forEach(assignment => { %>
+        <a href="/student/<%= username %>/course/<%= courseId %>/assignment/<%= assignment.id %>" class="bg-white rounded-2xl shadow-lg p-6 hover:shadow-2xl hover:scale-105 transform transition-all duration-300 cursor-pointer">
+          <div class="flex items-center justify-center h-28 mb-4 bg-purple-50 rounded-xl">
+            <span class="text-purple-600 text-lg font-semibold"><%= assignment.title %></span>
+          </div>
+          <p class="text-gray-500 text-center">Click to submit your work</p>
+        </a>
+      <% }) %>
+    </div>
+  </main>
+
+  <script>
+    const profileBtn = document.getElementById('profileBtn');
+    const profileMenu = document.getElementById('profileMenu');
+
+    profileBtn.addEventListener('click', () => profileMenu.classList.toggle('hidden'));
+    window.addEventListener('click', e => {
+      if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) profileMenu.classList.add('hidden');
+    });
+  </script>
+
 </body>
-</html> -->
+</html>
